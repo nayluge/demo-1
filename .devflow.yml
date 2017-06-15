@@ -1,0 +1,22 @@
+stack:
+  nginx:
+    document_root: web
+    index: app.php
+
+  php:
+    version: 7.1
+    modules:
+      - pdo_mysql
+    deployment:
+      install:
+        - "sed -i 's/database_host: 127.0.0.1/database_host: mysql/g' app/config/parameters.yml.dist"
+        - "sed -i 's/demo.victoire.dev: fr/$DEVFLOW_HOST: fr/g' app/config/parameters.yml.dist"
+        - composer install --prefer-dist --no-interaction --optimize-autoloader
+        - php bin/console doctrine:schema:update --force
+
+  mysql:
+    version: 5.5
+    user: root
+    password: root
+    databases:
+      - victoire_demo
