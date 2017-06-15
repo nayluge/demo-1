@@ -12,6 +12,7 @@ stack:
         - "sed -i 's/database_host: 127.0.0.1/database_host: mysql/g' app/config/parameters.yml.dist"
         - "sed -i 's/demo.victoire.dev: fr/$DEVFLOW_HOST: fr/g' app/config/parameters.yml.dist"
         - composer install --prefer-dist --no-interaction --optimize-autoloader
+        - php bin/console do:s:c
         - mysql -h mysql -u root -proot victoire_demo < ./var/dump/db.sql
         - php bin/console victoire:generate:view-cache
         - php bin/console victoire:widget-css:generate
